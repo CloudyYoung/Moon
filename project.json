@@ -1,0 +1,24 @@
+{
+	"contentrating" : "Everyone",
+	"description" : "",
+	"file" : "index.html",
+	"general" : 
+	{
+		"properties" : 
+		{
+			"schemecolor" : 
+			{
+				"order" : 0,
+				"text" : "ui_browse_properties_scheme_color",
+				"type" : "color",
+				"value" : "1 0.5098039215686274 0.6313725490196078"
+			}
+		}
+	},
+	"preview" : "preview.png",
+	"tags" : [ "Abstract" ],
+	"title" : "Cried Moon",
+	"type" : "web",
+	"visibility" : "public",
+	"workshopid" : "1967063279"
+}

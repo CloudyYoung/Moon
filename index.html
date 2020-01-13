@@ -1,0 +1,253 @@
+<html>
+
+<head>
+    <script type="text/javascript" src="https://unpkg.com/jquery"></script>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+		:root {
+			--transition: all .3s ease-out;
+		}
+
+        body {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            background: #FF819F;
+            height: 100%;
+        }
+
+        .bg {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            z-index: -9999;
+            background: url('bg.png');
+            background-size: cover !important;
+            background-repeat: no-repeat !important;
+            background-position: center center !important;
+        }
+
+        .move {
+            --x: 0px;
+            --y: 0px;
+            --x-change-rate: 0.07;
+            --y-change-rate: 0.07;
+            position: absolute;
+            top: var(--x);
+            left: var(--y);
+            margin-left: calc(var(--x-change-rate) * 100% * -1 * 1/2);
+            margin-top: calc(var(--y-change-rate) * 100% * -1 * 1/2);
+            width: calc((var(--x-change-rate) + 1) * 100%);
+            height: calc((var(--y-change-rate) + 1) * 100%);
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center center !important;
+            transition: var(--transition);
+        }
+
+        .move.raindrop {
+            left: calc(var(--x) * -0.15);
+            top: calc(var(--y) * -0.15);
+            z-index: 399;
+            background: url('raindrop.png');
+        }
+
+        .move.moon_cloud2 {
+            left: calc(var(--x) * -0.3);
+            top: calc(var(--y) * -0.4);
+            z-index: 299;
+            background: url('moon_cloud_2.png');
+        }
+
+        .move.moon_cloud {
+            left: calc(var(--x) * 0.3);
+            top: calc(var(--y) * 0.4);
+            z-index: 199;
+            background: url('moon_cloud.png');
+        }
+
+        .move.moon {
+            left: calc(var(--x) * 0.5);
+            top: calc(var(--y) * 0.5);
+            z-index: 99;
+            background: url('moon.png');
+        }
+
+        .move.top {
+            top: 0px;
+            left: 0px;
+            z-index: 89;
+            background: url('top.png');
+        }
+
+        .move.renders {
+            left: calc(var(--x) * -0.2);
+            top: calc(var(--y) * -0.2);
+            z-index: 79;
+            background: url('renders.png');
+        }
+
+        .move.cloud.moon_cloud1 {
+            background: url('moon_cloud.png');
+        }
+
+        .move.cloud.moon_cloud2 {
+            background: url('moon_cloud_2.png');
+        }
+
+        .rainwrap {
+            --x: 0px;
+            --y: 0px;
+            --x-change-rate: 0.07;
+            --y-change-rate: 0;
+            left: var(--x);
+            top: var(--y);
+            margin-left: calc(var(--x-change-rate) * 100% * -1 * 1/2);
+            margin-top: calc(var(--y-change-rate) * 100% * -1 * 1/2);
+            width: calc((var(--x-change-rate) + 1.02) * 100%);
+            height: calc((var(--y-change-rate) + 1.02) * 100%);
+            position: absolute;
+            /* background: rgba(0, 0, 0, 0.4); */
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        .cursor.raindrop {
+            --x: 0;
+            --y: 0;
+            --drop: 0px;
+            margin-top: var(--drop);
+            transform: translateX(-50%);
+            position: absolute;
+            top: var(--y);
+            left: var(--x);
+            width: 1.3%;
+            height: 2.21%;
+            z-index: 999;
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center center !important;
+            display: var(--display);
+        }
+
+        .cursor.raindrop.raindrop1 {
+            background: url('raindrop1.png');
+        }
+
+        .cursor.raindrop.raindrop2 {
+            background: url('raindrop2.png');
+        }
+
+        .cursor.raindrop.raindrop3 {
+            background: url('raindrop3.png');
+        }
+
+        .cursor.raindrop.raindrop4 {
+            background: url('raindrop4.png');
+        }
+
+        .cursor.raindrop.raindrop5 {
+            background: url('raindrop5.png');
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="bg"></div>
+    <div class="move moon"></div>
+    <div class="move moon_cloud"></div>
+    <div class="move moon_cloud2"></div>
+    <div class="move raindrop"></div>
+    <div class="move renders"></div>
+    <div class="move top"></div>
+
+    <div class="rainwrap"></div>
+
+    <script>
+
+        var rw_deduceX = 0;
+        var rw_deduceY = 0;
+        var mv_deduceX = 0;
+        var mv_deduceY = 0;
+
+        var dropSpeed = 3500;
+
+        $(function(){
+
+            let width = $('body').width();
+			let height = $('body').height();
+
+            let rw_xChangeRate = $('.rainwrap').css('--x-change-rate');
+			let rw_yChangeRate = $('.rainwrap').css('--y-change-rate');
+            rw_deduceX = width * rw_xChangeRate * 0.5;
+            rw_deduceY = height * rw_yChangeRate * 0.5;
+
+			$('.rainwrap').css({ '--x': rw_deduceX * 2 + 'px', '--y': rw_deduceY * 2 + 'px' });
+
+            let mv_xChangeRate = $('.move').css('--x-change-rate');
+			let mv_yChangeRate = $('.move').css('--y-change-rate');
+            mv_deduceX = width * rw_xChangeRate * 0.5;
+            mv_deduceY = height * rw_yChangeRate * 0.5;
+
+        });
+
+        $('body').mousemove(function (e) {
+
+            let width = $('body').width();
+			let height = $('body').height();
+
+            let rw_xChangeRate = $('.rainwrap').css('--x-change-rate');
+			let rw_yChangeRate = $('.rainwrap').css('--y-change-rate');
+
+			$('.rainwrap').css({ '--x': (e.offsetX * rw_xChangeRate * -1 + rw_deduceX) + 'px', '--y': (e.offsetY * rw_yChangeRate * -1 + rw_deduceY) + 'px' });
+
+
+            let mv_xChangeRate = $('.move').css('--x-change-rate');
+			let mv_yChangeRate = $('.move').css('--y-change-rate');
+
+			$('.move').css({ '--x': (e.offsetX * mv_xChangeRate * -1 + mv_deduceX) + 'px', '--y': (e.offsetY * mv_yChangeRate * -1 + mv_deduceY) + 'px' });
+
+
+        });
+
+        $('body').mouseup(function (e) {
+
+            let rand = Math.floor(Math.random() * 10000 + 1000);
+            let drop = '';
+            let id = (Date.now()).valueOf() + rand;
+            if (rand % 4 == 0) {
+                drop = '<div class="cursor raindrop raindrop1" id="' + id + '"></div>';
+            } else if (rand % 4 == 1) {
+                drop = '<div class="cursor raindrop raindrop2" id="' + id + '"></div>';
+            } else if (rand % 4 == 2) {
+                drop = '<div class="cursor raindrop raindrop3" id="' + id + '"></div>';
+            } else if (rand % 4 == 3) {
+                drop = '<div class="cursor raindrop raindrop4" id="' + id + '"></div>';
+            } else if (rand % 4 == 4) {
+                drop = '<div class="cursor raindrop raindrop5" id="' + id + '"></div>';
+            }
+
+            $('.rainwrap').append(drop);
+            $('#' + id).css({ '--x': (e.offsetX), '--y': e.offsetY + 'px', '--display': 'block' });
+
+            $('#' + id).animate({ 'margin-top': '100%' }, dropSpeed, 'swing', function () {
+                $(this).remove();
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>
