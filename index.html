@@ -180,12 +180,15 @@
         var mv_deduceX = 0;
         var mv_deduceY = 0;
 
+        var continueClick = 0;
+
+
         var dropSpeed = 3500;
 
         $(function(){
-
-            let width = $('body').width();
-			let height = $('body').height();
+                
+            var width = $('body').width();
+            var height = $('body').height();
 
             let rw_xChangeRate = $('.rainwrap').css('--x-change-rate');
 			let rw_yChangeRate = $('.rainwrap').css('--y-change-rate');
@@ -220,7 +223,10 @@
 
         });
 
-        $('body').mouseup(function (e) {
+        $('body').on("click tap", function (e) {
+                
+            var width = $('body').width();
+            var height = $('body').height();
 
             let rand = Math.floor(Math.random() * 10000 + 1000);
             let drop = '';
@@ -240,11 +246,69 @@
             $('.rainwrap').append(drop);
             $('#' + id).css({ '--x': (e.offsetX), '--y': e.offsetY + 'px', '--display': 'block' });
 
-            $('#' + id).animate({ 'margin-top': '100%' }, dropSpeed, 'swing', function () {
+            $('#' + id).animate({ 'margin-top': '100%' }, dropSpeed + Math.random() * 100, 'swing', function () {
                 $(this).remove();
             });
 
+            continueClick ++;
+
+            if(continueClick >= 10){
+                heavyRain();
+                continueClick = 0;
+            }
+
         });
+
+        function heavyRain(){
+                
+            var width = $('.rainwrap').width();
+            var height = $('.rainwrap').height();
+
+            for(t = 0; t < 150 ; t ++){
+
+                let rand = Math.floor(Math.random() * 10000 + 1000);
+                let x =Math.floor(Math.random() * width);
+                let y = Math.floor(Math.random() * height * 2) - 50;
+                let id = (Date.now()).valueOf() + rand;
+
+                let drop = "";
+
+                if (rand % 4 == 0) {
+                    drop = '<div class="cursor raindrop raindrop1" id="' + id + '"></div>';
+                } else if (rand % 4 == 1) {
+                    drop = '<div class="cursor raindrop raindrop2" id="' + id + '"></div>';
+                } else if (rand % 4 == 2) {
+                    drop = '<div class="cursor raindrop raindrop3" id="' + id + '"></div>';
+                } else if (rand % 4 == 3) {
+                    drop = '<div class="cursor raindrop raindrop4" id="' + id + '"></div>';
+                } else if (rand % 4 == 4) {
+                    drop = '<div class="cursor raindrop raindrop5" id="' + id + '"></div>';
+                }
+
+                $('.rainwrap').append(drop);
+                $('#' + id).css({"--x": x + "px", "--y": (y * -1) + "px", '--display': 'block'});
+
+
+                $('#' + id).animate({ 'margin-top': '250%' }, (dropSpeed - Math.random() * 1000) * 2, 'linear', function () {
+                    $(this).remove();
+                });
+
+
+            }
+
+        }
+
+        var continueClickBuffer = 0;
+
+        setInterval(function(){
+            if(continueClickBuffer == continueClick){
+                continueClick = 0;
+                continueClickBuffer = 0;
+            }else{
+                continueClickBuffer = continueClick;
+            }
+        }, 1000);
+        
 
     </script>
 
