@@ -1,5 +1,4 @@
-# Moon
-Moon - "She cried, so did moon." - Zora Xu (Ins: @zora.x.u)
+# Moon - Wallpaper Engine
 
 "She cried, so did moon." - Zora Xu (Ins: @zora.x.u)
 
