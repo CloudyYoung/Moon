@@ -293,7 +293,7 @@
                 $('#' + id).css({"--x": x + "px", "--y": y + "px", '--display': 'block'});
 
 
-                $('#' + id).animate({'margin-top': (heavyPeriod * 100 + 100) + "%"}, dropSpeed * heavyPeriod - Math.random() * 1000, 'swing', function () {
+                $('#' + id).animate({'margin-top': (heavyPeriod * 100 + 100) + "%"}, dropSpeed * heavyPeriod + Math.random() * 1500, 'swing', function () {
                     $(this).fadeOut(500, function(){
                         $(this).remove();
                     });
