@@ -182,8 +182,12 @@
 
         var continueClick = 0;
 
-
         var dropSpeed = 3500;
+
+        var heavyPeriod = 3;
+        var heavyAmount = 100;
+
+
 
         $(function(){
                 
@@ -264,11 +268,11 @@
             var width = $('.rainwrap').width();
             var height = $('.rainwrap').height();
 
-            for(t = 0; t < 150 ; t ++){
+            for(t = 0; t < heavyAmount; t ++){
 
                 let rand = Math.floor(Math.random() * 10000 + 1000);
                 let x =Math.floor(Math.random() * width);
-                let y = Math.floor(Math.random() * height * 2) - 50;
+                let y = Math.floor(Math.random() * height * -heavyPeriod) - 20;
                 let id = (Date.now()).valueOf() + rand;
 
                 let drop = "";
@@ -286,11 +290,13 @@
                 }
 
                 $('.rainwrap').append(drop);
-                $('#' + id).css({"--x": x + "px", "--y": (y * -1) + "px", '--display': 'block'});
+                $('#' + id).css({"--x": x + "px", "--y": y + "px", '--display': 'block'});
 
 
-                $('#' + id).animate({ 'margin-top': '250%' }, (dropSpeed - Math.random() * 1000) * 2, 'linear', function () {
-                    $(this).remove();
+                $('#' + id).animate({'margin-top': (heavyPeriod * 100 + 100) + "%"}, dropSpeed * heavyPeriod - Math.random() * 1000, 'swing', function () {
+                    $(this).fadeOut(500, function(){
+                        $(this).remove();
+                    });
                 });
 
 
