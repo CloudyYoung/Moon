@@ -121,8 +121,8 @@
         }
 
         .cursor.raindrop {
-            --x: 0;
-            --y: 0;
+            --x: -100%;
+            --y: -100%;
             --drop: 0px;
             margin-top: var(--drop);
             transform: translateX(-50%);
@@ -136,6 +136,7 @@
             background-repeat: no-repeat !important;
             background-position: center center !important;
             display: var(--display);
+            pointer-events: none;
         }
 
         .cursor.raindrop.raindrop1 {
@@ -185,7 +186,8 @@
         var dropSpeed = 3500;
 
         var heavyPeriod = 3;
-        var heavyAmount = 100;
+        var heavyAmount = 200;
+        var heavyRunning = false;
 
 
 
@@ -205,6 +207,8 @@
 			let mv_yChangeRate = $('.move').css('--y-change-rate');
             mv_deduceX = width * rw_xChangeRate * 0.5;
             mv_deduceY = height * rw_yChangeRate * 0.5;
+
+            heavyRainInitialize();
 
         });
 
@@ -256,25 +260,17 @@
 
             continueClick ++;
 
-            if(continueClick >= 10){
+            if(continueClick >= 20){
                 heavyRain();
                 continueClick = 0;
             }
 
         });
 
-        function heavyRain(){
-                
-            var width = $('.rainwrap').width();
-            var height = $('.rainwrap').height();
-
+        function heavyRainInitialize(){
             for(t = 0; t < heavyAmount; t ++){
-
-                let rand = Math.floor(Math.random() * 10000 + 1000);
-                let x =Math.floor(Math.random() * width);
-                let y = Math.floor(Math.random() * height * -heavyPeriod) - 20;
-                let id = (Date.now()).valueOf() + rand;
-
+                let rand = Math.floor(Math.random() * 20000 + 1000);
+                let id = "heavy-" + (t + 1);
                 let drop = "";
 
                 if (rand % 4 == 0) {
@@ -290,16 +286,30 @@
                 }
 
                 $('.rainwrap').append(drop);
+                $('#' + id).attr('heavy-id', t + 1);
+            }
+        }
+
+        function heavyRain(){
+                
+            var width = $('.rainwrap').width();
+            var height = $('.rainwrap').height();
+
+            heavyRunning = true;
+
+            for(t = 0; t < heavyAmount; t ++){
+                let id = "heavy-" + (t + 1);
+                let x = Math.floor(Math.random() * width);
+                let y = Math.floor(Math.random() * height * -heavyPeriod) - 20;
+
+                $('#' + id).stop(true, true);
                 $('#' + id).css({"--x": x + "px", "--y": y + "px", '--display': 'block'});
-
-
-                $('#' + id).animate({'margin-top': (heavyPeriod * 100 + 100) + "%"}, dropSpeed * heavyPeriod + Math.random() * 1500, 'swing', function () {
-                    $(this).fadeOut(500, function(){
-                        $(this).remove();
-                    });
+                $('#' + id).animate({'margin-top': ((heavyPeriod + 1) * 100) + "%"}, dropSpeed * heavyPeriod + Math.random() * 1000, 'swing', function(){
+                    $(this).css("margin-top", "0%");
+                    if($(this).attr('heavy-id') == heavyAmount){
+                        heavyRunning = false;
+                    }
                 });
-
-
             }
 
         }
@@ -307,11 +317,11 @@
         var continueClickBuffer = 0;
 
         setInterval(function(){
-            if(continueClickBuffer == continueClick){
+            if(continueClickBuffer != continueClick && !heavyRunning){
+                continueClickBuffer = continueClick;
+            }else{
                 continueClick = 0;
                 continueClickBuffer = 0;
-            }else{
-                continueClickBuffer = continueClick;
             }
         }, 1000);
         
