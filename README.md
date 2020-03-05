@@ -1,6 +1,6 @@
 # Moon - Wallpaper Engine
 
-"She cried, so did moon." - Zora Xu (Ins: @zora.x.u)
+"She cried, so did moon." - Zora Xu (Ins: @zora.isok)
 
 This wallpaper is interactive. It responses to user's cursor, and raindrop will appear for every click.
 It is made by 😈 with love and creativity, a sweet gift to 🐇.
