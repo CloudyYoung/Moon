@@ -8,9 +8,9 @@
             padding: 0px;
         }
 
-		:root {
-			--transition: all .3s ease-out;
-		}
+        :root {
+            --transition: all .3s ease-out;
+        }
 
         body {
             position: fixed;
@@ -191,20 +191,20 @@
 
 
 
-        $(function(){
-                
+        $(function () {
+
             var width = $('body').width();
             var height = $('body').height();
 
             let rw_xChangeRate = $('.rainwrap').css('--x-change-rate');
-			let rw_yChangeRate = $('.rainwrap').css('--y-change-rate');
+            let rw_yChangeRate = $('.rainwrap').css('--y-change-rate');
             rw_deduceX = width * rw_xChangeRate * 0.5;
             rw_deduceY = height * rw_yChangeRate * 0.5;
 
-			$('.rainwrap').css({ '--x': rw_deduceX * 2 + 'px', '--y': rw_deduceY * 2 + 'px' });
+            $('.rainwrap').css({ '--x': rw_deduceX * 2 + 'px', '--y': rw_deduceY * 2 + 'px' });
 
             let mv_xChangeRate = $('.move').css('--x-change-rate');
-			let mv_yChangeRate = $('.move').css('--y-change-rate');
+            let mv_yChangeRate = $('.move').css('--y-change-rate');
             mv_deduceX = width * rw_xChangeRate * 0.5;
             mv_deduceY = height * rw_yChangeRate * 0.5;
 
@@ -215,24 +215,24 @@
         $('body').mousemove(function (e) {
 
             let width = $('body').width();
-			let height = $('body').height();
+            let height = $('body').height();
 
             let rw_xChangeRate = $('.rainwrap').css('--x-change-rate');
-			let rw_yChangeRate = $('.rainwrap').css('--y-change-rate');
+            let rw_yChangeRate = $('.rainwrap').css('--y-change-rate');
 
-			$('.rainwrap').css({ '--x': (e.offsetX * rw_xChangeRate * -1 + rw_deduceX) + 'px', '--y': (e.offsetY * rw_yChangeRate * -1 + rw_deduceY) + 'px' });
+            $('.rainwrap').css({ '--x': (e.offsetX * rw_xChangeRate * -1 + rw_deduceX) + 'px', '--y': (e.offsetY * rw_yChangeRate * -1 + rw_deduceY) + 'px' });
 
 
             let mv_xChangeRate = $('.move').css('--x-change-rate');
-			let mv_yChangeRate = $('.move').css('--y-change-rate');
+            let mv_yChangeRate = $('.move').css('--y-change-rate');
 
-			$('.move').css({ '--x': (e.offsetX * mv_xChangeRate * -1 + mv_deduceX) + 'px', '--y': (e.offsetY * mv_yChangeRate * -1 + mv_deduceY) + 'px' });
+            $('.move').css({ '--x': (e.offsetX * mv_xChangeRate * -1 + mv_deduceX) + 'px', '--y': (e.offsetY * mv_yChangeRate * -1 + mv_deduceY) + 'px' });
 
 
         });
 
         $('body').on("click tap", function (e) {
-                
+
             var width = $('body').width();
             var height = $('body').height();
 
@@ -258,17 +258,17 @@
                 $(this).remove();
             });
 
-            continueClick ++;
+            continueClick++;
 
-            if(continueClick >= 20){
+            if (continueClick >= 20) {
                 heavyRain();
                 continueClick = 0;
             }
 
         });
 
-        function heavyRainInitialize(){
-            for(t = 0; t < heavyAmount; t ++){
+        function heavyRainInitialize() {
+            for (t = 0; t < heavyAmount; t++) {
                 let rand = Math.floor(Math.random() * 20000 + 1000);
                 let id = "heavy-" + (t + 1);
                 let drop = "";
@@ -290,23 +290,23 @@
             }
         }
 
-        function heavyRain(){
-                
+        function heavyRain() {
+
             var width = $('.rainwrap').width();
             var height = $('.rainwrap').height();
 
             heavyRunning = true;
 
-            for(t = 0; t < heavyAmount; t ++){
+            for (t = 0; t < heavyAmount; t++) {
                 let id = "heavy-" + (t + 1);
                 let x = Math.floor(Math.random() * width);
                 let y = Math.floor(Math.random() * height * -heavyPeriod) - 20;
 
                 $('#' + id).stop(true, true);
-                $('#' + id).css({"--x": x + "px", "--y": y + "px", '--display': 'block'});
-                $('#' + id).animate({'margin-top': ((heavyPeriod + 1) * 100) + "%"}, dropSpeed * heavyPeriod + Math.random() * 1000, 'swing', function(){
+                $('#' + id).css({ "--x": x + "px", "--y": y + "px", '--display': 'block' });
+                $('#' + id).animate({ 'margin-top': ((heavyPeriod + 1) * 100) + "%" }, dropSpeed * heavyPeriod + Math.random() * 1000, 'swing', function () {
                     $(this).css("margin-top", "0%");
-                    if($(this).attr('heavy-id') == heavyAmount){
+                    if ($(this).attr('heavy-id') == heavyAmount) {
                         heavyRunning = false;
                     }
                 });
@@ -316,15 +316,15 @@
 
         var continueClickBuffer = 0;
 
-        setInterval(function(){
-            if(continueClickBuffer != continueClick && !heavyRunning){
+        setInterval(function () {
+            if (continueClickBuffer != continueClick && !heavyRunning) {
                 continueClickBuffer = continueClick;
-            }else{
+            } else {
                 continueClick = 0;
                 continueClickBuffer = 0;
             }
         }, 1000);
-        
+
 
     </script>
 
